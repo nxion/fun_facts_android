@@ -1,17 +1,23 @@
 package nx.funfacts;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Random;
 
 
 public class FunFactsActivity extends Activity {
+
+    private FactBook mFactBook = new FactBook();
+    private ColorWheel mColorWheel = new ColorWheel();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,38 +26,22 @@ public class FunFactsActivity extends Activity {
 
         // Declare our View variables and assign them the views from the layout file
         final TextView factLabel = (TextView) findViewById(R.id.factTextView);
-        Button showFactButton = (Button) findViewById(R.id.showFactButton);
+        final Button showFactButton = (Button) findViewById(R.id.showFactButton);
+        final RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.relativeLayout);
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // The button was click and update the fact label with new facts
-                String fact = "";
-                // Randomly select a fact
-                Random randomGenerator = new Random(); //Construct a new random number generator
-
-
+                String fact = mFactBook.getFact();
                 //Update the label with the dynamic fact
                 factLabel.setText(fact);
+
+                int color = mColorWheel.getColor();
+                relativeLayout.setBackgroundColor(color);
+                showFactButton.setTextColor(color);
             }
         };
         showFactButton.setOnClickListener(listener);
 
-    }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_fun_facts, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        return id == R.id.action_settings || super.onOptionsItemSelected(item);
+        Toast.makeText(this, "Yay! Our Activity was Created!", Toast.LENGTH_LONG).show();
     }
 }
